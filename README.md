@@ -1,4 +1,3 @@
-battlecruiser
-=============
+sandbox for backpropagation on DAG-NNs
+======================================
 
-Hehe
