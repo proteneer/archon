@@ -1,3 +1,4 @@
-sandbox for backpropagation on DAG-NNs
-======================================
+Workflow
+========
 
+User prepares model and dataset and initializes asgd.
