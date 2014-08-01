@@ -8,10 +8,10 @@ class Shard:
 		self.weights = 1234
 		self._weights_lock = Lock()
 		self.context = zmq.Context()
-		Thread(target=self.update_core_weights).start()
+		Thread(target=self.send_core_server_weights).start()
 		Thread(target=self.apply_gradients).start()
 
-	def update_core_weights(self):
+	def send_core_server_weights(self):
 		socket = self.context.socket(zmq.REP)
 		socket.bind('tcp://*:5739')
 		# use a polling mechanism to make it non-blocking
@@ -20,10 +20,9 @@ class Shard:
 		while not should_shutdown():
 			socks = dict(poller.poll(100))
 			if socks:
-				if socks.get(socket) == zmq.POLLIN:
-					message = socket.recv()
-					with self._weights_lock:
-						socket.send(str(self.weights))
+				message = socket.recv()
+				with self._weights_lock:
+					socket.send(str(self.weights))
 
 	def apply_gradients(self):
 		socket = self.context.socket(zmq.REP)
