@@ -34,7 +34,8 @@ class Shard:
             if poller.poll(100):
                 message = socket.recv()
                 with self._weights_lock:
-                    print('server received gradient:', message)
+                    # apply weights here
+                    self.weights += int(message)
                     socket.send('OK')
 
 s = Shard()
